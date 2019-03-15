@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # vue-frame
 
 > A Vue.js project
@@ -19,3 +20,6 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+=======
+# Vue-Permission
+>>>>>>> 14d8991955e9bef18dc3705843750bdc8883f078
