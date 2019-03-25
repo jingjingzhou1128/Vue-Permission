@@ -18,7 +18,10 @@ Mock.XHR.prototype.send = function () {
 // let Mock = new MockAdapter(service)
 
 // user
+// user login
 Mock.mock(/\/user\/login/, 'post', userApi.loginUser)
 // Mock.onPost(/\/user\/login/).reply(userApi.loginUser)
+// get user info
+Mock.mock(/\/user\/info\.*/, 'get', userApi.getUserInfo)
 
 export default Mock

@@ -1,6 +1,6 @@
 import {getToken, setToken} from '@/utils/auth'
 // , setToken, removeToken
-import {loginUser} from '@/api/user'
+import {loginUser, getUserInfo} from '@/api/user'
 
 const user = {
   state: {
@@ -37,7 +37,14 @@ const user = {
         })
       })
     },
-    GetUserInfo ({commit}) {}
+    GetUserInfo ({commit}) {
+      return new Promise((resolve, reject) => {
+        getUserInfo(state.userInfo.userName).then(response => {
+          let data = response.data
+          
+        })
+      })
+    }
   }
 }
 

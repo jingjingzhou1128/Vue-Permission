@@ -33,3 +33,18 @@ export default {
     }
   }
 }
+
+export default {
+  getUserInfo: config => {
+    let {userName} = JSON.parse(config.body)
+    let matchUser = userMap.find(user => {
+      if (user.userName === userName) return true
+      return false
+    })
+    if (matchUser) {
+      return {type: 'success', message: 'Congratulations, the operation is successful!', user: matchUser}
+    } else {
+      return {type: 'error', message: 'Get user info is failed!'}
+    }
+  }
+}
