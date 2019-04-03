@@ -1,5 +1,6 @@
 const getters = {
   userInfo: state => state.user.userInfo,
+  roles: state => state.user.roles,
   token: state => state.user.token,
   addRouters: state => state.permission.addRouters,
   permission_routers: state => state.permission.routers
