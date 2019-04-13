@@ -22,6 +22,8 @@ import axios from 'axios'
 
 import Cookies from 'js-cookie'
 
+import './utils/permission'
+
 import './mock'
 
 Vue.config.productionTip = false

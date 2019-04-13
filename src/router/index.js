@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import Layout from '@/views/layout/index'
+
 Vue.use(Router)
 
 export const constRouterMap = [
@@ -15,9 +17,20 @@ export const constRouterMap = [
   },
   {
     path: '/dashboard',
-    name: 'Dashboard',
-    component: () => import('@/views/dashboard/index')
+    component: Layout,
+    children: [
+      {
+        name: 'Dashboard',
+        path: '',
+        component: () => import('@/views/dashboard/index')
+      }
+    ]
   },
+  // {
+  //   path: '/dashboard',
+  //   name: 'Dashboard',
+  //   component: () => import('@/views/dashboard/index')
+  // },
   {
     path: '/401',
     name: '401',
