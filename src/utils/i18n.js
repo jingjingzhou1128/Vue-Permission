@@ -1,5 +1,5 @@
 // translate
-export function generateTitle(path, title) {
+export function generateTitle (path, title) {
   const hasKey = this.$te(path + title)
 
   if (hasKey) {

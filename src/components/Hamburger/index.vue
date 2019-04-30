@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'hamburger',
+  name: 'Hamburger',
   props: {
     isShrink: {
       type: Boolean,
@@ -16,9 +16,6 @@ export default {
       type: Function,
       default: null
     }
-  },
-  created () {
-    console.log(this.isShrink)
   }
 }
 </script>

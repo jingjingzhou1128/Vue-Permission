@@ -1,6 +1,9 @@
 <template>
   <div class="login-wrapper">
-    <h4>Login</h4>
+    <div class="header">
+      <change-lang></change-lang>
+    </div>
+    <h4>{{generateTitle(i18nPath, 'login')}}</h4>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
       <el-form-item prop="userName">
         <el-input placeholder="" v-model="loginForm.userName" type="text">
@@ -14,28 +17,31 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleLogin">Login</el-button>
+        <el-button type="primary" @click="handleLogin">{{generateTitle(i18nPath, 'login')}}</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import ChangeLang from '@/components/ChangeLang'
+import {generateTitle} from '@/utils/i18n'
+
 export default {
   name: 'Login',
   data () {
     const validateUserName = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('Please input content!'))
+        return callback(new Error(this.generateTitle('vueFrame.global.', 'requiredInputMess')))
       } else {
         callback()
       }
     }
     const validatePwd = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('Please input content!'))
+        return callback(new Error(this.generateTitle('vueFrame.global.', 'requiredInputMess')))
       } else if (value.length < 6) {
-        return callback(new Error('The password can not be less than 6 digits'))
+        return callback(new Error(this.generateTitle('vueFrame.login.', 'requiredPwdMess')))
       } else {
         callback()
       }
@@ -47,13 +53,15 @@ export default {
       },
       loginRules: {
         userName: [
-          {required: true, trigger: 'blur', validator: validateUserName}
+          {required: true, trigger: 'change', validator: validateUserName}
         ],
         password: [
-          {required: true, trigger: 'blur', validator: validatePwd}
+          {required: true, trigger: 'change', validator: validatePwd}
         ]
       },
-      pwdType: 'password'
+      pwdType: 'password',
+      // i18n path
+      i18nPath: 'vueFrame.login.'
     }
   },
   methods: {
@@ -72,8 +80,10 @@ export default {
           return false
         }
       })
-    }
-  }
+    },
+    generateTitle
+  },
+  components: { ChangeLang }
 }
 </script>
 
@@ -81,5 +91,12 @@ export default {
 .login-form {
   width: 400px;
   margin: 0 auto;
+}
+.login-wrapper {
+  .header {
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>

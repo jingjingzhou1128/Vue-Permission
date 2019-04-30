@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import navItem from '@/views/gateWay/layout/components/Navbar/navItem'
-import changeLang from '@/components/ChangeLang'
-import changeTheme from '@/components/ChangeTheme'
+import NavItem from './NavItem'
+import ChangeLang from './ChangeLang'
+import ChangeTheme from './ChangeTheme'
 export default {
-  name: 'navbar',
+  name: 'Navbar',
   data () {
     return {
       menus: [
@@ -159,7 +159,7 @@ export default {
       return this.$route.path
     }
   },
-  components: { navItem, changeLang, changeTheme }
+  components: { NavItem, ChangeLang, ChangeTheme }
 }
 </script>
 

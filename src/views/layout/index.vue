@@ -1,6 +1,8 @@
 <template>
   <el-container class="app-wrapper">
-    <el-aside>Aside</el-aside>
+    <el-aside>
+      <sidebar></sidebar>
+    </el-aside>
     <el-container>
       <el-header>
         <navbar></navbar>
@@ -13,11 +15,12 @@
 </template>
 
 <script>
+import Sidebar from './components/Sidebar/index'
 import Navbar from './components/Navbar'
 
 export default {
   name: 'layout',
-  components: {Navbar}
+  components: {Navbar, Sidebar}
 }
 </script>
 
@@ -25,8 +28,8 @@ export default {
 .app-wrapper {
   height: 100%;
   .el-aside {
-    width: 200px !important;
-    background-color: rgb(48, 65, 86);
+    // width: 200px !important;
+    width: auto !important;
   }
   .el-header {
     height: auto !important;

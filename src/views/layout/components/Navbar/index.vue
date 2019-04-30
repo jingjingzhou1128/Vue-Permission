@@ -39,11 +39,15 @@ import Hamburger from '@/components/Hamburger'
 import ChangeLang from '@/components/ChangeLang'
 import ChangeTheme from '@/components/ChangeTheme'
 
+import {generateTitle} from '@/utils/i18n'
+
 export default {
-  name: 'navbar',
+  name: 'Navbar',
   data () {
     return {
-      avatar: require('@/assets/images/user/avatar.jpg')
+      avatar: require('@/assets/images/user/avatar.jpg'),
+      // i18n path
+      i18nPath: 'vueFrame.route.'
     }
   },
   computed: {
@@ -52,6 +56,8 @@ export default {
     ])
   },
   methods: {
+    // 国际化
+    generateTitle,
     logOut () {
       this.$store.dispatch('LogOut').then(response => {
         if (response.data && response.data.type === 'success') {
@@ -68,9 +74,30 @@ export default {
     },
     toggleSidebar () {
       this.$store.dispatch('ToggleSidebar')
+    },
+    // 获取breadCrumb数据
+    getBreadCrumb () {
+      let _this = this
+      let match = this.$route.matched.filter(item => item.meta && item.meta.title)
+      let breadList = match.map(item => {
+        return {
+          path: item.path,
+          label: _this.generateTitle(_this.i18nPath, item.meta.title)
+        }
+      })
+      console.log(this.$route.meta && this.$route.meta.title)
+      // if (!(this.$route.meta && this.$route.meta.title.toLowerCase() === 'dashboard')) {
+      //   breadList = [{path: '/dashboard', label: 'Dashboard'}].concat(breadList)
+      // }
+      return breadList
     }
   },
-  components: { Hamburger, ChangeLang, ChangeTheme }
+  components: { Hamburger, ChangeLang, ChangeTheme },
+  watch: {
+    $route (to, from) {
+      console.log(this.getBreadCrumb())
+    }
+  }
 }
 </script>
 

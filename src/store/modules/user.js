@@ -69,6 +69,13 @@ const user = {
           reject(error)
         })
       })
+    },
+    // 强制退出
+    FedLogOut ({commit}) {
+      commit('SET_USERINFO', {})
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      removeToken()
     }
   }
 }

@@ -14,7 +14,7 @@
 import {removeClass, addClass} from '@/utils/dom'
 // import '@/styles/theme/theme1.scss'
 export default {
-  name: 'changeLang',
+  name: 'ChangeTheme',
   data () {
     return {
       themeItems: [{
