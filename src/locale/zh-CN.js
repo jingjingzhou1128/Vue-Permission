@@ -4,6 +4,7 @@ export default {
       requiredInputMess: '请输入内容'
     },
     route: {
+      dashboard: '首页',
       permission: '权限',
       nestRouter: '嵌套路由',
       menu1: '菜单1',

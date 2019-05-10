@@ -5,19 +5,38 @@ import Layout from '@/views/layout/index'
 
 Vue.use(Router)
 
+/**
+ * hidden: true                          if hidden is true, menu will not show in sidebar(default is false)
+ * redirect: 'noRedirect'                if redirect is noRedirect, menu will not redirect in breadcrumb
+ * meta: {
+ *   rootShow: true,                     if rootShow is true, menu that in children will not show in sidebar
+ *   title,                              the name of menu in i18n
+ *   icon,                               icon that show in sidebar
+ *   roles: Array                        control the permission of router for different roles
+ * }
+ */
+
 export const constRouterMap = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/login',
+    hidden: true
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/login/index')
+    component: () => import('@/views/login/index'),
+    hidden: true
   },
   {
     path: '/dashboard',
     component: Layout,
+    redirect: {name: 'Dashboard'},
+    meta: {
+      rootShow: true,
+      title: 'dashboard',
+      icon: 'icon-dashboard'
+    },
     children: [
       {
         name: 'Dashboard',
@@ -28,50 +47,54 @@ export const constRouterMap = [
   },
   {
     path: '/401',
-    name: '401',
-    component: () => import('@/views/error/401')
+    name: '401Page',
+    component: () => import('@/views/error/401'),
+    hidden: true
+  },
+  {
+    path: '/404',
+    name: '404Page',
+    component: () => import('@/views/error/404'),
+    hidden: true
   }
 ]
 
 export const asyncRouterMap = [
-  // {
-  //   path: '/dashboard',
-  //   component: Layout,
-  //   meta: {
-  //     roles: ['admin', 'editor'],
-  //     // rootShow: true,
-  //     title: 'Permission',
-  //     icon: 'icon-user',
-  //     hidden: true
-  //   },
-  //   children: [
-  //     {
-  //       name: 'Dashboard',
-  //       path: '',
-  //       component: () => import('@/views/dashboard/index')
-  //     }
-  //   ]
-  // },
   {
     path: '/permission',
+    redirect: 'noRedirect',
     component: Layout,
     meta: {
       roles: ['admin', 'editor'],
-      rootShow: true,
+      // rootShow: true,
       title: 'permission',
       icon: 'icon-user'
     },
     children: [
       {
-        name: 'Permission',
-        path: '',
-        component: () => import('@/views/permission/index')
+        name: 'Admin',
+        path: 'admin',
+        component: () => import('@/views/permission/admin'),
+        meta: {
+          roles: ['admin'],
+          title: 'admin'
+        }
+      },
+      {
+        name: 'Editor',
+        path: 'editor',
+        component: () => import('@/views/permission/editor'),
+        meta: {
+          roles: ['editor'],
+          title: 'editor'
+        }
       }
     ]
   },
   {
     path: '/nest',
     component: Layout,
+    redirect: {name: 'Menu1-menu1'},
     meta: {
       roles: ['admin', 'editor'],
       title: 'nestRouter',
@@ -84,7 +107,6 @@ export const asyncRouterMap = [
         component: () => import('@/views/nest/menu1/index'),
         redirect: {name: 'Menu1-menu1'},
         meta: {
-          roles: ['admin', 'editor'],
           title: 'menu1'
         },
         children: [
@@ -109,6 +131,7 @@ export const asyncRouterMap = [
       {
         name: 'Menu2',
         path: 'menu2',
+        redirect: {name: 'Menu2-menu1'},
         component: () => import('@/views/nest/menu2/index'),
         meta: {
           title: 'menu2'
@@ -146,7 +169,8 @@ export const asyncRouterMap = [
         ]
       }
     ]
-  }
+  },
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 export default new Router({

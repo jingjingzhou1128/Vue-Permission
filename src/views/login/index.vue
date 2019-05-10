@@ -61,7 +61,8 @@ export default {
       },
       pwdType: 'password',
       // i18n path
-      i18nPath: 'vueFrame.login.'
+      i18nPath: 'vueFrame.login.',
+      redirect: ''
     }
   },
   methods: {
@@ -72,7 +73,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.$store.dispatch('LoginUser', this.loginForm).then(response => {
-            this.$router.push({name: 'Dashboard'})
+            this.$router.push({path: this.redirect})
           }).catch(error => {
             console.log(error)
           })
@@ -83,7 +84,15 @@ export default {
     },
     generateTitle
   },
-  components: { ChangeLang }
+  components: { ChangeLang },
+  watch: {
+    $route: {
+      handler (route) {
+        this.redirect = route.query && route.query.redirect
+      },
+      immediate: true
+    }
+  }
 }
 </script>
 

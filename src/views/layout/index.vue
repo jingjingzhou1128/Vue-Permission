@@ -1,12 +1,14 @@
 <template>
   <el-container class="app-wrapper">
-    <el-aside>
+    <div class="backstage" v-if="isMobile && sidebar.opened" @click="handleCloseSidebar"></div>
+    <el-aside :class="sidebarCalss">
       <sidebar></sidebar>
     </el-aside>
     <el-container>
       <el-header>
         <navbar></navbar>
       </el-header>
+      <tags></tags>
       <el-main>
         <router-view/>
       </el-main>
@@ -17,23 +19,17 @@
 <script>
 import Sidebar from './components/Sidebar/index'
 import Navbar from './components/Navbar'
+import Tags from './components/Tags'
+
+import resizeScreen from './mixin/resizeScreen'
 
 export default {
   name: 'layout',
-  components: {Navbar, Sidebar}
+  mixins: [resizeScreen],
+  components: {Navbar, Sidebar, Tags}
 }
 </script>
 
 <style lang="scss" scoped>
-.app-wrapper {
-  height: 100%;
-  .el-aside {
-    // width: 200px !important;
-    width: auto !important;
-  }
-  .el-header {
-    height: auto !important;
-    padding: 0;
-  }
-}
+
 </style>

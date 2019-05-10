@@ -1,11 +1,10 @@
 <template>
   <div class="navbar">
     <!-- navbar left -->
-    <ul class="nav-left">
-      <li>
-        <hamburger :isShrink="!sidebar.opened" :toggleClick="toggleSidebar"></hamburger>
-      </li>
-    </ul>
+    <div class="nav-left">
+      <hamburger :isShrink="!sidebar.opened" :toggleClick="toggleSidebar"></hamburger>
+      <bread-crumb :breadOption="breadOption"></bread-crumb>
+    </div>
     <!-- navbar right -->
     <ul class="nav-right">
       <li>
@@ -38,6 +37,7 @@ import {mapGetters} from 'vuex'
 import Hamburger from '@/components/Hamburger'
 import ChangeLang from '@/components/ChangeLang'
 import ChangeTheme from '@/components/ChangeTheme'
+import BreadCrumb from '@/components/BreadCrumb'
 
 import {generateTitle} from '@/utils/i18n'
 
@@ -47,7 +47,14 @@ export default {
     return {
       avatar: require('@/assets/images/user/avatar.jpg'),
       // i18n path
-      i18nPath: 'vueFrame.route.'
+      i18nPath: 'vueFrame.route.',
+      // 面包屑导航
+      breadOption: {
+        // separator: '',
+        separatorClass: 'el-icon-arrow-right',
+        // class: '',
+        items: []
+      }
     }
   },
   computed: {
@@ -66,7 +73,8 @@ export default {
             type: 'success',
             duration: 5 * 1000
           })
-          this.$router.push({name: 'Login'})
+          // this.$router.push({name: 'Login'})
+          location.reload() // In order to re-instantiate the vue-router object to avoid bugs
         }
       }).catch(error => {
         console.log(error)
@@ -77,26 +85,28 @@ export default {
     },
     // 获取breadCrumb数据
     getBreadCrumb () {
-      let _this = this
       let match = this.$route.matched.filter(item => item.meta && item.meta.title)
       let breadList = match.map(item => {
         return {
           path: item.path,
-          label: _this.generateTitle(_this.i18nPath, item.meta.title)
+          label: item.meta.title,
+          isNoRedirect: item.redirect === 'noRedirect'
         }
       })
-      console.log(this.$route.meta && this.$route.meta.title)
-      // if (!(this.$route.meta && this.$route.meta.title.toLowerCase() === 'dashboard')) {
-      //   breadList = [{path: '/dashboard', label: 'Dashboard'}].concat(breadList)
-      // }
+      if (breadList[0].label.trim().toLowerCase() !== 'dashboard') {
+        breadList = [{path: '/dashboard', label: 'dashboard'}].concat(breadList)
+      }
       return breadList
     }
   },
-  components: { Hamburger, ChangeLang, ChangeTheme },
+  components: { Hamburger, ChangeLang, ChangeTheme, BreadCrumb },
   watch: {
     $route (to, from) {
-      console.log(this.getBreadCrumb())
+      this.breadOption.items = this.getBreadCrumb()
     }
+  },
+  created () {
+    this.breadOption.items = this.getBreadCrumb()
   }
 }
 </script>
@@ -104,15 +114,20 @@ export default {
 <style lang="scss">
 .navbar {
   height: 50px;
-  box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+  // box-shadow: 0 1px 3px 0px rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
   display: flex;
   justify-content: space-between;
   padding: 0 20px;
   .nav-left {
-    line-height: 50px;
+    // line-height: 50px;
+    display: flex;
+    align-items: center;
     .iconfont {
       font-size: 24px;
       cursor: pointer;
+    }
+    .bread-crumb {
+      margin-left: 15px;
     }
   }
   .nav-right {

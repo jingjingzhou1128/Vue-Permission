@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!item.meta.hidden" class="menu-wrapper">
+  <div v-if="!item.hidden" class="menu-wrapper">
     <!-- 无下拉菜单 -->
     <el-menu-item
       v-if="item.meta.rootShow || !item.children"
@@ -56,7 +56,8 @@ export default {
       if (!menu.children) return false
       if (menu.children.length === 0) return false
       let hasShowItem = menu.children.some(item => {
-        return item.meta && !item.meta.hidden
+        // return item.meta && !item.meta.hidden
+        return !item.hidden
       })
       if (!hasShowItem) return false
       return true

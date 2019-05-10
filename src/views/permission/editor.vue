@@ -1,10 +1,10 @@
 <template>
-  <p>401 error</p>
+  <p>Admin editor</p>
 </template>
 
 <script>
 export default {
-  name: 'error401'
+  name: 'permisstionEditor'
 }
 </script>
 

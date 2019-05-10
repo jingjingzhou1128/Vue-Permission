@@ -4,6 +4,7 @@ export default {
       requiredInputMess: 'Please input content!'
     },
     route: {
+      dashboard: 'Dashboard',
       permission: 'Permission',
       nestRouter: 'Nest',
       menu1: 'Menu1',

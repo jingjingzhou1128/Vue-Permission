@@ -6,7 +6,8 @@ const app = {
     theme: Cookies.get('theme') || 'default',
     sidebar: {
       opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true // 0:shrink,1:opened;false:shrink,true:opened
-    }
+    },
+    device: 'desktop'
   },
   mutations: {
     SET_LANGUAGE: (state, language) => {
@@ -28,6 +29,9 @@ const app = {
     CLOSE_SIDEBAR: state => {
       state.sidebar.opened = false
       Cookies.set('sidebarStatus', 0)
+    },
+    SET_DEVICE: (state, device) => {
+      state.device = device
     }
   },
   actions: {
@@ -45,6 +49,9 @@ const app = {
     },
     CloseSidebar ({commit}) {
       commit('CLOSE_SIDEBAR')
+    },
+    SetDevice ({commit}, device) {
+      commit('SET_DEVICE', device)
     }
   }
 }

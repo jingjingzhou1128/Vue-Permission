@@ -6,7 +6,9 @@ const getters = {
   permission_routers: state => state.permission.routers,
   language: state => state.app.language,
   theme: state => state.app.theme,
-  sidebar: state => state.app.sidebar
+  sidebar: state => state.app.sidebar,
+  device: state => state.app.device,
+  tags: state => state.tagsView.tags
 }
 
 export default getters

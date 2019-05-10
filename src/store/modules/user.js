@@ -25,16 +25,17 @@ const user = {
   },
   actions: {
     // 用户登录
-    LoginUser ({commit}, userInfo) {
+    LoginUser ({commit, dispatch}, userInfo) {
       return new Promise((resolve, reject) => {
         loginUser(userInfo).then(response => {
           let data = response.data
           if (data && data.user) {
             commit('SET_TOKEN', data.user.token)
-            commit('SET_USERINFO', {userName: data.user.userName})
-            commit('SET_ROLES', data.user.roles)
+            // commit('SET_USERINFO', {userName: data.user.userName})
+            // commit('SET_ROLES', data.user.roles)
             setToken(data.user.token)
           }
+          // dispatch('GenerateRoutes', data.user)
           resolve(response)
         }).catch(error => {
           reject(error)

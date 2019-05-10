@@ -1,10 +1,10 @@
 <template>
-  <p>Permission</p>
+  <p>404 page</p>
 </template>
 
 <script>
 export default {
-  name: 'permisstion'
+  name: 'error404'
 }
 </script>
 
