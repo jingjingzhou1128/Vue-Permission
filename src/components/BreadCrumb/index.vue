@@ -1,10 +1,12 @@
 <template>
   <el-breadcrumb :separator="breadOption.separator" :separator-class="breadOption.separatorClass" class="bread-crumb" :class="breadOption.class">
-    <el-breadcrumb-item
-      v-for="item in breadOption.items"
-      :key="item.path"
-      :to="item.isNoRedirect ? '' : item.path"
-      :replace="item.replace">{{ generateTitle(i18nPath, item.label) }}</el-breadcrumb-item>
+    <transition-group name="breadcrumb">
+      <el-breadcrumb-item
+        v-for="item in breadOption.items"
+        :key="item.path"
+        :to="item.isNoRedirect ? '' : item.path"
+        :replace="item.replace">{{ generateTitle(i18nPath, item.label) }}</el-breadcrumb-item>
+    </transition-group>
   </el-breadcrumb>
 </template>
 

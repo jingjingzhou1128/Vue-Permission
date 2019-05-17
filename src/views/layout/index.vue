@@ -9,9 +9,10 @@
         <navbar></navbar>
       </el-header>
       <tags></tags>
-      <el-main>
+      <app-main></app-main>
+      <!-- <el-main>
         <router-view/>
-      </el-main>
+      </el-main> -->
     </el-container>
   </el-container>
 </template>
@@ -20,13 +21,14 @@
 import Sidebar from './components/Sidebar/index'
 import Navbar from './components/Navbar'
 import Tags from './components/Tags'
+import AppMain from './components/AppMain'
 
 import resizeScreen from './mixin/resizeScreen'
 
 export default {
   name: 'layout',
   mixins: [resizeScreen],
-  components: {Navbar, Sidebar, Tags}
+  components: {Navbar, Sidebar, Tags, AppMain}
 }
 </script>
 

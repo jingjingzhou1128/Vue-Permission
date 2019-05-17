@@ -12,7 +12,9 @@ Vue.use(Router)
  *   rootShow: true,                     if rootShow is true, menu that in children will not show in sidebar
  *   title,                              the name of menu in i18n
  *   icon,                               icon that show in sidebar
- *   roles: Array                        control the permission of router for different roles
+ *   roles: Array,                       control the permission of router for different roles
+ *   nonMenu: true                       default is false, if nonMenu is true, will not show in tagsView
+ *   affixTag: true                      default is false, if affixTag is true, will affix in tagsView and can't be closed
  * }
  */
 
@@ -35,7 +37,8 @@ export const constRouterMap = [
     meta: {
       rootShow: true,
       title: 'dashboard',
-      icon: 'icon-dashboard'
+      icon: 'icon-dashboard',
+      affixTag: true
     },
     children: [
       {
@@ -157,14 +160,46 @@ export const asyncRouterMap = [
               {
                 name: 'Menu2-menu2-menu1',
                 path: 'menu1',
+                meta: {
+                  title: 'viewMenu1',
+                  nonMenu: true
+                },
                 component: () => import('@/views/nest/menu2/menu2/menu1')
               },
               {
                 name: 'Menu2-menu2-menu2',
                 path: 'menu2',
+                meta: {
+                  title: 'viewMenu2',
+                  nonMenu: true
+                },
                 component: () => import('@/views/nest/menu2/menu2/menu2')
               }
             ]
+          }
+        ]
+      },
+      {
+        path: 'menu3',
+        component: () => import('@/views/nest/menu3/index'),
+        meta: {
+          title: 'menu3',
+          rootShow: true
+        },
+        children: [
+          {
+            name: 'Menu3-home',
+            path: '',
+            component: () => import('@/views/nest/menu3/home')
+          },
+          {
+            name: 'Menu3-view',
+            path: 'view',
+            meta: {
+              title: 'view',
+              nonMenu: true
+            },
+            component: () => import('@/views/nest/menu3/view')
           }
         ]
       }

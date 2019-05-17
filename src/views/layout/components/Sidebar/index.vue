@@ -24,7 +24,7 @@ export default {
       'sidebar'
     ]),
     defaultActive () {
-      let filterMatched = this.$route.matched.filter(item => item.meta && item.meta.title)
+      let filterMatched = this.$route.matched.filter(item => item.meta && item.meta.title && !item.meta.nonMenu)
       return filterMatched[filterMatched.length - 1].path
       // return this.$route.path
     },

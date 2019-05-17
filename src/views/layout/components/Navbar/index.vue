@@ -73,6 +73,8 @@ export default {
             type: 'success',
             duration: 5 * 1000
           })
+          // 清除tags
+          this.$store.dispatch('ClearTags')
           // this.$router.push({name: 'Login'})
           location.reload() // In order to re-instantiate the vue-router object to avoid bugs
         }

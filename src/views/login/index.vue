@@ -73,7 +73,12 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.$store.dispatch('LoginUser', this.loginForm).then(response => {
-            this.$router.push({path: this.redirect})
+            if (this.redirect) {
+              this.$router.push({path: this.redirect})
+            } else {
+              this.$router.push({path: 'Dashboard'})
+            }
+            // this.$router.push({path: this.redirect})
           }).catch(error => {
             console.log(error)
           })
