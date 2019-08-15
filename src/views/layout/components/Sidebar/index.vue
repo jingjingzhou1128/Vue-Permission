@@ -25,6 +25,7 @@ export default {
     ]),
     defaultActive () {
       let filterMatched = this.$route.matched.filter(item => item.meta && item.meta.title && !item.meta.nonMenu)
+      if (!filterMatched.length) return ''
       return filterMatched[filterMatched.length - 1].path
       // return this.$route.path
     },

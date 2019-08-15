@@ -7,12 +7,14 @@
     </div>
     <!-- navbar right -->
     <ul class="nav-right">
-      <li>
-        <change-lang></change-lang>
-      </li>
-      <li>
-        <change-theme></change-theme>
-      </li>
+      <template v-if="!isMobile">
+        <li>
+          <change-lang></change-lang>
+        </li>
+        <li>
+          <change-theme></change-theme>
+        </li>
+      </template>
       <li class="user-info">
         <el-dropdown trigger="click">
           <div class="el-dropdown-link">
@@ -60,7 +62,10 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar'
-    ])
+    ]),
+    isMobile () {
+      return this.$store.getters.device === 'mobile'
+    }
   },
   methods: {
     // 国际化
@@ -88,6 +93,7 @@ export default {
     // 获取breadCrumb数据
     getBreadCrumb () {
       let match = this.$route.matched.filter(item => item.meta && item.meta.title)
+      if (!match.length) return
       let breadList = match.map(item => {
         return {
           path: item.path,

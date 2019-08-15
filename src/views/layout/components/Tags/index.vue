@@ -1,17 +1,20 @@
 <template>
   <div class="tags">
-    <router-link
-      v-for="item in tags"
-      :key="item.title"
-      :class="[{active: activePath === item.path.path}, 'tags-item']"
-      :to="item.path">
-      {{ generateTitle(i18nPath, item.title) }}
-      <i v-if="item.closable" class="iconfont icon-close" @click.prevent.stop="closeTag(item)"></i>
-    </router-link>
-    <ul class="contextmenu" v-show="contextVisible">
-      <li>Refresh</li>
-      <li>Colse Other</li>
-      <li>Colse All</li>
+    <div class="tags-scroll" id="tagScroll">
+      <router-link
+        v-for="item in tags"
+        :key="item.title"
+        :class="[{active: activePath === item.path.path}, 'tags-item']"
+        :to="item.path"
+        @contextmenu.prevent.native="openContextMenu(item, $event)">
+        {{ generateTitle(i18nPath, item.title) }}
+        <i v-if="item.closable" class="iconfont icon-close" @click.prevent.stop="closeTag(item)"></i>
+      </router-link>
+    </div>
+    <ul class="contextmenu" v-show="contextVisible" id="contextmenu">
+      <li @click="refreshTagView(selectTag)">Refresh</li>
+      <li @click="closeOtherTags(selectTag)">Close Other</li>
+      <li @click="closeAllTags()">Close All</li>
     </ul>
   </div>
 </template>
@@ -30,7 +33,9 @@ export default {
       // 当前被激活的path
       activePath: '',
       // i18n path
-      i18nPath: 'vueFrame.route.'
+      i18nPath: 'vueFrame.route.',
+      // 当前选择的tag
+      selectTag: null
     }
   },
   computed: {
@@ -83,6 +88,62 @@ export default {
       let activeTag = this.tags[this.tags.length - 1]
       this.activePath = activeTag.path.path
       this.$router.push(activeTag.path)
+    },
+    // 开启contextmenu
+    openContextMenu (tag, e) {
+      const menuWidth = 100
+      this.selectTag = tag
+      let contextmenu = document.getElementById('contextmenu')
+      let tagScroll = document.getElementById('tagScroll')
+      let clientWidth = document.documentElement.clientWidth || document.body.clientWidth
+      let left = e.offsetX + e.target.offsetLeft - tagScroll.scrollLeft + 15
+      if (clientWidth >= left + menuWidth) {
+        contextmenu.style.left = `${left}px`
+      } else {
+        contextmenu.style.left = `${clientWidth - 100 - 15}px`
+      }
+      contextmenu.style.top = `${e.offsetY + e.target.offsetTop + 15}px`
+      this.contextVisible = true
+    },
+    // 关闭contextmenu
+    closeContextMenu () {
+      this.contextVisible = false
+    },
+    // 刷新当前页面
+    refreshTagView (tag) {
+      if (!tag) return
+      let {path} = tag.path
+      this.$router.replace({
+        // path: '/redirect' + this.activePath
+        path,
+        query: {
+          key: new Date().getTime()
+        }
+      })
+      this.closeContextMenu()
+    },
+    // 关闭其他tags
+    closeOtherTags (tag) {
+      // e.stopPropagation()
+      if (!tag) return
+      let otherTags = this.tags.filter(item => {
+        return item.path.path !== tag.path.path && item.closable
+      })
+      otherTags.forEach(item => {
+        this.$store.dispatch('DeleteTag', item)
+      })
+      if (this.activePath === tag.path.path) return
+      this.$router.push(tag.path)
+    },
+    // 关闭所有tag(除不可关闭外)
+    closeAllTags () {
+      let filterAffix = this.tags.filter(item => item.closable)
+      filterAffix.forEach(item => {
+        if (!item.closable) return
+        this.$store.dispatch('DeleteTag', item)
+      })
+      if (this.tags.some(item => item.path.path === this.activePath)) return
+      this.$router.push(this.tags[this.tags.length - 1].path)
     }
   },
   watch: {
@@ -104,18 +165,30 @@ export default {
   mounted () {
     this.initAffixTags()
     this.addTag()
+    document.addEventListener('click', this.closeContextMenu)
+  },
+  beforeDestory () {
+    document.removeEventListener('click', this.closeContextMenu)
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .tags {
-  height: 34px;
+  position: relative;
+  // height: 34px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
   border-bottom: 1px solid #d6d6d6;
-  padding: 0 20px;
+  // padding: 0 20px;
   text-align: left;
   line-height: 34px;
+  .tags-scroll {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    overflow-x: auto;
+    padding: 0 20px;
+  }
   .tags-item {
     display: inline-block;
     font-size: 12px;
@@ -141,6 +214,22 @@ export default {
       cursor: pointer;
       margin-left: 2px;
       vertical-align: -1px;
+    }
+  }
+  .contextmenu {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100px;
+    background: #fff;
+    box-shadow: 1px 1px 2px 1px #adadad;
+    border-radius: 3px;
+    li {
+      padding: 0 10px;
+      cursor: pointer;
+      &:hover {
+        background: #eee;
+      }
     }
   }
 }

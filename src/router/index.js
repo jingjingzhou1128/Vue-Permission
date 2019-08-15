@@ -25,6 +25,17 @@ export const constRouterMap = [
     hidden: true
   },
   {
+    path: '/redirect',
+    hidden: true,
+    component: Layout,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/login/index'),
@@ -208,7 +219,24 @@ export const asyncRouterMap = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-export default new Router({
-  mode: 'hash', // hash
+// export default new Router({
+//   mode: 'hash', // hash
+//   routes: constRouterMap
+// })
+
+const createRouter = () => new Router({
+  mode: 'hash',
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: constRouterMap
 })
+
+const router = createRouter()
+
+export function resetRouter () {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
+
+export default router
